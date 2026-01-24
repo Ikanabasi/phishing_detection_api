@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 import pickle
 import re
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Load trained model
 with open("phishing_model.pkl", "rb") as f:
@@ -37,3 +39,5 @@ def home():
 
 if __name__ == "__main__":
     app.run()
+
+
