@@ -35,4 +35,4 @@ model.fit(X_train, y_train)
 with open("phishing_model.pkl", "wb") as f:
     pickle.dump(model, f)
 
-print("✅ Model trained and saved successfully")
+print("Model trained and saved successfully")
