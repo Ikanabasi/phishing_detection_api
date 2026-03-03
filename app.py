@@ -10,15 +10,22 @@ CORS(app)
 with open("phishing_model.pkl", "rb") as f:
     model = pickle.load(f)
 
-# MUST match training features
+# Same suspicious words as training
+suspicious_words = ["login", "verify", "secure", "update", "bank", "account"]
+
+def has_suspicious(url):
+    return int(any(word in url.lower() for word in suspicious_words))
+
+# MUST EXACTLY match training features (same order!)
 def extract_features(url):
     return [
-        len(url),                     # url_length
-        url.count("."),               # num_dots
-        1 if url.startswith("https") else 0,  # has_https
-        1 if "@" in url else 0,        # has_at
-        1 if "-" in url else 0,        # has_hyphen
-        1 if re.search(r"\d", url) else 0  # has_digits
+        len(url),                               # url_length
+        url.count("."),                         # num_dots
+        1 if url.startswith("https") else 0,    # has_https
+        1 if "@" in url else 0,                 # has_at
+        1 if "-" in url else 0,                 # has_hyphen
+        1 if re.search(r"\d", url) else 0,      # has_digits
+        has_suspicious(url)                     # has_suspicious_word 
     ]
 
 @app.route("/predict", methods=["POST"])
@@ -39,5 +46,3 @@ def home():
 
 if __name__ == "__main__":
     app.run()
-
-
