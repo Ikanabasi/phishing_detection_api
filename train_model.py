@@ -13,7 +13,7 @@ def has_suspicious(url):
     return int(any(word in str(url).lower() for word in suspicious_words))
 
 # Create new column
-df["has_suspicious_word"] = df["url"].apply(has_suspicious)
+df["has_suspicious_word"] = df["url_name"].apply(has_suspicious)
 
 feature_columns = [
     "url_length",
@@ -51,3 +51,6 @@ with open("phishing_model.pkl", "wb") as f:
     pickle.dump(model, f)
 
 print("Model trained and saved successfully")
+
+
+
